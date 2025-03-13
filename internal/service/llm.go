@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	v1 "ai-answer-go/api/llm/v1"
 	"ai-answer-go/internal/biz"
@@ -28,6 +29,7 @@ func NewLLMService(uc *biz.LLMUsecase, logger log.Logger) *LLMService {
 // ChatDeepseekR1 实现LLM服务的ChatDeepseekR1方法
 func (s *LLMService) ChatDeepseekR1(ctx context.Context, req *v1.ChatDeepseekR1Request) (*v1.ChatDeepseekR1Response, error) {
 	s.log.WithContext(ctx).Infof("ChatDeepseekR1 request: %v", req.SessionId)
+	fmt.Println("ChatDeepseekR1 request:", req.SessionId)
 	return s.uc.ChatDeepseekR1(ctx, req)
 }
 
@@ -35,6 +37,7 @@ func (s *LLMService) ChatDeepseekR1(ctx context.Context, req *v1.ChatDeepseekR1R
 func (s *LLMService) StreamChatDeepseekR1(req *v1.ChatDeepseekR1Request, stream v1.LLM_StreamChatDeepseekR1Server) error {
 	s.log.Infof("StreamChatDeepseekR1 request: %v", req.SessionId)
 
+	fmt.Println("StreamChatDeepseekR1 request:", req.SessionId)
 	// 创建回调函数，用于处理流式响应
 	callback := func(resp *v1.ChatDeepseekR1Response) error {
 		return stream.Send(resp)

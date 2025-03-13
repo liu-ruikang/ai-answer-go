@@ -11,7 +11,7 @@ service LLM {
   // 调用Deepseek R1模型
   rpc ChatDeepseekR1 (ChatDeepseekR1Request) returns (ChatDeepseekR1Response) {
     option (google.api.http) = {
-      post: "/v1/llm/deepseek-r1/chat"
+      post: "/api/llm/deepseek-r1/chat"
       body: "*"
     };
   }
@@ -19,7 +19,7 @@ service LLM {
   // 流式调用Deepseek R1模型
   rpc StreamChatDeepseekR1 (ChatDeepseekR1Request) returns (stream ChatDeepseekR1Response) {
     option (google.api.http) = {
-      post: "/v1/llm/deepseek-r1/stream-chat"
+      post: "/api/llm/deepseek-r1/stream-chat"
       body: "*"
     };
   }

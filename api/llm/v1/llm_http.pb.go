@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             v5.29.3
-// source: llm/v1/llm.proto
+// source: api/llm/v1/llm.proto
 
 package v1
 
@@ -28,7 +28,7 @@ type LLMHTTPServer interface {
 
 func RegisterLLMHTTPServer(s *http.Server, srv LLMHTTPServer) {
 	r := s.Route("/")
-	r.POST("/v1/llm/deepseek-r1/chat", _LLM_ChatDeepseekR10_HTTP_Handler(srv))
+	r.POST("/api/llm/deepseek-r1/chat", _LLM_ChatDeepseekR10_HTTP_Handler(srv))
 }
 
 func _LLM_ChatDeepseekR10_HTTP_Handler(srv LLMHTTPServer) func(ctx http.Context) error {
@@ -67,7 +67,7 @@ func NewLLMHTTPClient(client *http.Client) LLMHTTPClient {
 
 func (c *LLMHTTPClientImpl) ChatDeepseekR1(ctx context.Context, in *ChatDeepseekR1Request, opts ...http.CallOption) (*ChatDeepseekR1Response, error) {
 	var out ChatDeepseekR1Response
-	pattern := "/v1/llm/deepseek-r1/chat"
+	pattern := "/api/llm/deepseek-r1/chat"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationLLMChatDeepseekR1))
 	opts = append(opts, http.PathTemplate(pattern))

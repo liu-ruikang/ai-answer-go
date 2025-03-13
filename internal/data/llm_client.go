@@ -55,20 +55,30 @@ type DeepseekR1Request struct {
 
 // DeepseekR1Response Deepseek API响应格式
 type DeepseekR1Response struct {
-	ID      string `json:"id"`
+	Id      string `json:"id"`
 	Object  string `json:"object"`
-	Created int64  `json:"created"`
+	Created int    `json:"created"`
 	Model   string `json:"model"`
 	Choices []struct {
-		Index        int               `json:"index"`
-		Message      DeepseekR1Message `json:"message"`
-		FinishReason string            `json:"finish_reason"`
+		Index   int `json:"index"`
+		Message struct {
+			Role    string `json:"role"`
+			Content string `json:"content"`
+		} `json:"message"`
+		Logprobs     interface{} `json:"logprobs"`
+		FinishReason string      `json:"finish_reason"`
 	} `json:"choices"`
 	Usage struct {
-		PromptTokens     int32 `json:"prompt_tokens"`
-		CompletionTokens int32 `json:"completion_tokens"`
-		TotalTokens      int32 `json:"total_tokens"`
+		PromptTokens        int32 `json:"prompt_tokens"`
+		CompletionTokens    int32 `json:"completion_tokens"`
+		TotalTokens         int32 `json:"total_tokens"`
+		PromptTokensDetails struct {
+			CachedTokens int32 `json:"cached_tokens"`
+		} `json:"prompt_tokens_details"`
+		PromptCacheHitTokens  int32 `json:"prompt_cache_hit_tokens"`
+		PromptCacheMissTokens int32 `json:"prompt_cache_miss_tokens"`
 	} `json:"usage"`
+	SystemFingerprint string `json:"system_fingerprint"`
 }
 
 // DeepseekR1StreamResponse Deepseek API流式响应格式
@@ -134,10 +144,10 @@ func NewDeepseekR1ClientWithConfig(apiKey, baseURL string, logger log.Logger) *D
 // Chat 实现LLMClient接口的Chat方法
 func (c *DeepseekR1Client) Chat(ctx context.Context, req *v1.ChatDeepseekR1Request) (*v1.ChatDeepseekR1Response, error) {
 	startTime := time.Now()
-
+	fmt.Println("DeepseekR1Client Chat request:", req.SessionId)
 	// 转换请求格式
 	apiReq := &DeepseekR1Request{
-		Model:       "deepseek-r1",
+		Model:       "deepseek-reasoner", // 使用deepseek-reasoner模型  deepseek-chat
 		Temperature: req.Temperature,
 		TopP:        req.TopP,
 		MaxTokens:   req.MaxTokens,
@@ -160,7 +170,7 @@ func (c *DeepseekR1Client) Chat(ctx context.Context, req *v1.ChatDeepseekR1Reque
 	}
 
 	// 创建HTTP请求
-	httpReq, err := http.NewRequestWithContext(ctx, "POST", c.baseURL+"/v1/chat/completions", bytes.NewBuffer(reqBody))
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", c.baseURL+"/chat/completions", bytes.NewBuffer(reqBody))
 	if err != nil {
 		c.logger.Errorf("failed to create request: %v", err)
 		return nil, fmt.Errorf("failed to create request: %w", err)
@@ -228,10 +238,11 @@ func (c *DeepseekR1Client) Chat(ctx context.Context, req *v1.ChatDeepseekR1Reque
 // StreamChat 实现LLMClient接口的StreamChat方法
 func (c *DeepseekR1Client) StreamChat(ctx context.Context, req *v1.ChatDeepseekR1Request, callback func(*v1.ChatDeepseekR1Response) error) error {
 	startTime := time.Now()
+	fmt.Println("StreamChat 开始")
 
 	// 转换请求格式
 	apiReq := &DeepseekR1Request{
-		Model:       "deepseek-r1",
+		Model:       "deepseek-reasoner", // 使用deepseek-reasoner模型  deepseek-chat
 		Temperature: req.Temperature,
 		TopP:        req.TopP,
 		MaxTokens:   req.MaxTokens,
@@ -254,7 +265,7 @@ func (c *DeepseekR1Client) StreamChat(ctx context.Context, req *v1.ChatDeepseekR
 	}
 
 	// 创建HTTP请求
-	httpReq, err := http.NewRequestWithContext(ctx, "POST", c.baseURL+"/v1/chat/completions", bytes.NewBuffer(reqBody))
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", c.baseURL+"/chat/completions", bytes.NewBuffer(reqBody))
 	if err != nil {
 		c.logger.Errorf("failed to create request: %v", err)
 		return fmt.Errorf("failed to create request: %w", err)

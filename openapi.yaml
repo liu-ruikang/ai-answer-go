@@ -3,29 +3,11 @@
 
 openapi: 3.0.3
 info:
-    title: ""
+    title: LLM API
+    description: LLM服务定义
     version: 0.0.1
 paths:
-    /api/helloworld/{name}:
-        get:
-            tags:
-                - Greeter
-            description: Sends a greeting
-            operationId: Greeter_SayHello
-            parameters:
-                - name: name
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.helloworld.v1.HelloReply'
-    /v1/llm/deepseek-r1/chat:
+    /api/llm/deepseek-r1/chat:
         post:
             tags:
                 - LLM
@@ -35,7 +17,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Request'
+                            $ref: '#/components/schemas/ChatDeepseekR1Request'
                 required: true
             responses:
                 "200":
@@ -43,8 +25,14 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Response'
-    /v1/llm/deepseek-r1/stream-chat:
+                                $ref: '#/components/schemas/ChatDeepseekR1Response'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/llm/deepseek-r1/stream-chat:
         post:
             tags:
                 - LLM
@@ -54,7 +42,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Request'
+                            $ref: '#/components/schemas/ChatDeepseekR1Request'
                 required: true
             responses:
                 "200":
@@ -62,16 +50,16 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Response'
+                                $ref: '#/components/schemas/ChatDeepseekR1Response'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
 components:
     schemas:
-        api.helloworld.v1.HelloReply:
-            type: object
-            properties:
-                message:
-                    type: string
-            description: The response message containing the greetings
-        api.llm.v1.ChatDeepseekR1Request:
+        ChatDeepseekR1Request:
             type: object
             properties:
                 sessionId:
@@ -79,7 +67,7 @@ components:
                 messages:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.llm.v1.Message'
+                        $ref: '#/components/schemas/Message'
                 temperature:
                     type: number
                     format: float
@@ -92,7 +80,7 @@ components:
                 stream:
                     type: boolean
             description: Deepseek R1请求
-        api.llm.v1.ChatDeepseekR1Response:
+        ChatDeepseekR1Response:
             type: object
             properties:
                 sessionId:
@@ -100,13 +88,21 @@ components:
                 content:
                     type: string
                 tokenUsage:
-                    $ref: '#/components/schemas/api.llm.v1.TokenUsage'
+                    $ref: '#/components/schemas/TokenUsage'
                 model:
                     type: string
                 errorMessage:
                     type: string
             description: Deepseek R1响应
-        api.llm.v1.Message:
+        GoogleProtobufAny:
+            type: object
+            properties:
+                '@type':
+                    type: string
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        Message:
             type: object
             properties:
                 role:
@@ -114,7 +110,23 @@ components:
                 content:
                     type: string
             description: 消息结构定义
-        api.llm.v1.TokenUsage:
+        Status:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+        TokenUsage:
             type: object
             properties:
                 promptTokens:
@@ -128,7 +140,4 @@ components:
                     format: int32
             description: Token使用统计
 tags:
-    - name: Greeter
-      description: The greeting service definition.
     - name: LLM
-      description: LLM服务定义

@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"fmt"
 
 	v1 "ai-answer-go/api/llm/v1"
 
@@ -33,11 +34,13 @@ func NewLLMUsecase(repo LLMRepo, logger log.Logger) *LLMUsecase {
 // ChatDeepseekR1 调用Deepseek R1模型
 func (uc *LLMUsecase) ChatDeepseekR1(ctx context.Context, req *v1.ChatDeepseekR1Request) (*v1.ChatDeepseekR1Response, error) {
 	uc.log.WithContext(ctx).Infof("ChatDeepseekR1: %v", req.SessionId)
+	fmt.Println("LLMUsecase ChatDeepseekR1 request:", req.SessionId)
 	return uc.repo.ChatDeepseekR1(ctx, req)
 }
 
 // StreamChatDeepseekR1 流式调用Deepseek R1模型
 func (uc *LLMUsecase) StreamChatDeepseekR1(ctx context.Context, req *v1.ChatDeepseekR1Request, callback func(*v1.ChatDeepseekR1Response) error) error {
 	uc.log.WithContext(ctx).Infof("StreamChatDeepseekR1: %v", req.SessionId)
+	fmt.Println("LLMUsecase StreamChatDeepseekR1 request:", req.SessionId)
 	return uc.repo.StreamChatDeepseekR1(ctx, req, callback)
 }

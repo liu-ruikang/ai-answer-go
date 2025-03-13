@@ -28,6 +28,7 @@ func (r *llmRepo) ChatDeepseekR1(ctx context.Context, req *v1.ChatDeepseekR1Requ
 	if r.data.deepseekR1Client == nil {
 		return nil, ErrDeepseekR1ClientNotInitialized
 	}
+	fmt.Println("llmRepo ChatDeepseekR1 request:", req.SessionId)
 	return r.data.deepseekR1Client.Chat(ctx, req)
 }
 
@@ -36,6 +37,7 @@ func (r *llmRepo) StreamChatDeepseekR1(ctx context.Context, req *v1.ChatDeepseek
 	if r.data.deepseekR1Client == nil {
 		return ErrDeepseekR1ClientNotInitialized
 	}
+	fmt.Println("llmRepo StreamChatDeepseekR1 request:", req.SessionId)
 	return r.data.deepseekR1Client.StreamChat(ctx, req, callback)
 }
 
