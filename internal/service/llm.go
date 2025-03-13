@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	v1 "ai-answer-go/api/helloworld/v1"
+	v1 "ai-answer-go/api/llm/v1"
 	"ai-answer-go/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"

@@ -2,6 +2,7 @@ package server
 
 import (
 	v1 "ai-answer-go/api/helloworld/v1"
+	llmv1 "ai-answer-go/api/llm/v1"
 	"ai-answer-go/internal/conf"
 	"ai-answer-go/internal/service"
 
@@ -28,6 +29,6 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, llm *service
 	}
 	srv := http.NewServer(opts...)
 	v1.RegisterGreeterHTTPServer(srv, greeter)
-	v1.RegisterLLMHTTPServer(srv, llm)
+	llmv1.RegisterLLMHTTPServer(srv, llm)
 	return srv
 }

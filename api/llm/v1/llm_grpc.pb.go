@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.29.3
-// source: helloworld/v1/llm.proto
+// source: llm/v1/llm.proto
 
 package v1
 
@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	LLM_ChatDeepseekR1_FullMethodName       = "/api.helloworld.v1.LLM/ChatDeepseekR1"
-	LLM_StreamChatDeepseekR1_FullMethodName = "/api.helloworld.v1.LLM/StreamChatDeepseekR1"
+	LLM_ChatDeepseekR1_FullMethodName       = "/api.llm.v1.LLM/ChatDeepseekR1"
+	LLM_StreamChatDeepseekR1_FullMethodName = "/api.llm.v1.LLM/StreamChatDeepseekR1"
 )
 
 // LLMClient is the client API for LLM service.
@@ -152,7 +152,7 @@ type LLM_StreamChatDeepseekR1Server = grpc.ServerStreamingServer[ChatDeepseekR1R
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var LLM_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.helloworld.v1.LLM",
+	ServiceName: "api.llm.v1.LLM",
 	HandlerType: (*LLMServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -167,5 +167,5 @@ var LLM_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "helloworld/v1/llm.proto",
+	Metadata: "llm/v1/llm.proto",
 }

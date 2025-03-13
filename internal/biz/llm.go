@@ -3,7 +3,7 @@ package biz
 import (
 	"context"
 
-	v1 "ai-answer-go/api/helloworld/v1"
+	v1 "ai-answer-go/api/llm/v1"
 
 	"github.com/go-kratos/kratos/v2/log"
 )

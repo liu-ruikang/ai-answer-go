@@ -30,10 +30,18 @@ Thumbs.db
 *.cert
 *.key
 *.log
+log/*.log
+cache/*
 bin/
+configs/*.yaml
+/**/cache/**/*
 
 # Develop tools
 .vscode/
 .idea/
-.cursor/
 *.swp
+cmd/ai-answer-go/__debug_bin*
+cmd/ai-answer-go/cache/naming/
+
+# Cursor rules
+.cursorrules

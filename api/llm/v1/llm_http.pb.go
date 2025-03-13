@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             v5.29.3
-// source: helloworld/v1/llm.proto
+// source: llm/v1/llm.proto
 
 package v1
 
@@ -19,7 +19,7 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationLLMChatDeepseekR1 = "/api.helloworld.v1.LLM/ChatDeepseekR1"
+const OperationLLMChatDeepseekR1 = "/api.llm.v1.LLM/ChatDeepseekR1"
 
 type LLMHTTPServer interface {
 	// ChatDeepseekR1 调用Deepseek R1模型

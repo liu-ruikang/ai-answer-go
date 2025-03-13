@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package api.helloworld.v1;
+package api.llm.v1;
 
 import "google/api/annotations.proto";
 
-option go_package = "ai-answer-go/api/helloworld/v1;v1";
+option go_package = "ai-answer-go/api/llm/v1;v1";
 
 // LLM服务定义
 service LLM {

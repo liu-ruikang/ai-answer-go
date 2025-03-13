@@ -35,7 +35,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.helloworld.v1.ChatDeepseekR1Request'
+                            $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Request'
                 required: true
             responses:
                 "200":
@@ -43,7 +43,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.helloworld.v1.ChatDeepseekR1Response'
+                                $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Response'
     /v1/llm/deepseek-r1/stream-chat:
         post:
             tags:
@@ -54,7 +54,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.helloworld.v1.ChatDeepseekR1Request'
+                            $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Request'
                 required: true
             responses:
                 "200":
@@ -62,10 +62,16 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.helloworld.v1.ChatDeepseekR1Response'
+                                $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Response'
 components:
     schemas:
-        api.helloworld.v1.ChatDeepseekR1Request:
+        api.helloworld.v1.HelloReply:
+            type: object
+            properties:
+                message:
+                    type: string
+            description: The response message containing the greetings
+        api.llm.v1.ChatDeepseekR1Request:
             type: object
             properties:
                 sessionId:
@@ -73,7 +79,7 @@ components:
                 messages:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.helloworld.v1.Message'
+                        $ref: '#/components/schemas/api.llm.v1.Message'
                 temperature:
                     type: number
                     format: float
@@ -86,7 +92,7 @@ components:
                 stream:
                     type: boolean
             description: Deepseek R1请求
-        api.helloworld.v1.ChatDeepseekR1Response:
+        api.llm.v1.ChatDeepseekR1Response:
             type: object
             properties:
                 sessionId:
@@ -94,19 +100,13 @@ components:
                 content:
                     type: string
                 tokenUsage:
-                    $ref: '#/components/schemas/api.helloworld.v1.TokenUsage'
+                    $ref: '#/components/schemas/api.llm.v1.TokenUsage'
                 model:
                     type: string
                 errorMessage:
                     type: string
             description: Deepseek R1响应
-        api.helloworld.v1.HelloReply:
-            type: object
-            properties:
-                message:
-                    type: string
-            description: The response message containing the greetings
-        api.helloworld.v1.Message:
+        api.llm.v1.Message:
             type: object
             properties:
                 role:
@@ -114,7 +114,7 @@ components:
                 content:
                     type: string
             description: 消息结构定义
-        api.helloworld.v1.TokenUsage:
+        api.llm.v1.TokenUsage:
             type: object
             properties:
                 promptTokens:

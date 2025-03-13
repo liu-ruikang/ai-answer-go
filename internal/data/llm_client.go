@@ -14,7 +14,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/prometheus/client_golang/prometheus"
 
-	v1 "ai-answer-go/api/helloworld/v1"
+	v1 "ai-answer-go/api/llm/v1"
 )
 
 // LLMClient 定义LLM客户端接口

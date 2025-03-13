@@ -2,6 +2,7 @@ package server
 
 import (
 	v1 "ai-answer-go/api/helloworld/v1"
+	llmv1 "ai-answer-go/api/llm/v1"
 	"ai-answer-go/internal/conf"
 	"ai-answer-go/internal/service"
 
@@ -28,6 +29,6 @@ func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, llm *service
 	}
 	srv := grpc.NewServer(opts...)
 	v1.RegisterGreeterServer(srv, greeter)
-	v1.RegisterLLMServer(srv, llm)
+	llmv1.RegisterLLMServer(srv, llm)
 	return srv
 }
