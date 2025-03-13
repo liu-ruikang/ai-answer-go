@@ -3,15 +3,13 @@
 
 openapi: 3.0.3
 info:
-    title: Greeter API
-    description: The greeting service definition.
+    title: ""
     version: 0.0.1
 paths:
-    /helloworld/{name}:
+    /api/helloworld/{name}:
         get:
             tags:
                 - Greeter
-                - subgroup
             description: Sends a greeting
             operationId: Greeter_SayHello
             parameters:
@@ -26,14 +24,111 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/helloworld.v1.HelloReply'
+                                $ref: '#/components/schemas/api.helloworld.v1.HelloReply'
+    /v1/llm/deepseek-r1/chat:
+        post:
+            tags:
+                - LLM
+            description: 调用Deepseek R1模型
+            operationId: LLM_ChatDeepseekR1
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Request'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Response'
+    /v1/llm/deepseek-r1/stream-chat:
+        post:
+            tags:
+                - LLM
+            description: 流式调用Deepseek R1模型
+            operationId: LLM_StreamChatDeepseekR1
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Request'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.llm.v1.ChatDeepseekR1Response'
 components:
     schemas:
-        helloworld.v1.HelloReply:
+        api.helloworld.v1.HelloReply:
             type: object
             properties:
                 message:
                     type: string
             description: The response message containing the greetings
+        api.llm.v1.ChatDeepseekR1Request:
+            type: object
+            properties:
+                sessionId:
+                    type: string
+                messages:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.llm.v1.Message'
+                temperature:
+                    type: number
+                    format: float
+                topP:
+                    type: number
+                    format: float
+                maxTokens:
+                    type: integer
+                    format: int32
+                stream:
+                    type: boolean
+            description: Deepseek R1请求
+        api.llm.v1.ChatDeepseekR1Response:
+            type: object
+            properties:
+                sessionId:
+                    type: string
+                content:
+                    type: string
+                tokenUsage:
+                    $ref: '#/components/schemas/api.llm.v1.TokenUsage'
+                model:
+                    type: string
+                errorMessage:
+                    type: string
+            description: Deepseek R1响应
+        api.llm.v1.Message:
+            type: object
+            properties:
+                role:
+                    type: string
+                content:
+                    type: string
+            description: 消息结构定义
+        api.llm.v1.TokenUsage:
+            type: object
+            properties:
+                promptTokens:
+                    type: integer
+                    format: int32
+                completionTokens:
+                    type: integer
+                    format: int32
+                totalTokens:
+                    type: integer
+                    format: int32
+            description: Token使用统计
 tags:
     - name: Greeter
+      description: The greeting service definition.
+    - name: LLM
+      description: LLM服务定义

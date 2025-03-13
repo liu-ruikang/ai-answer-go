@@ -22,23 +22,29 @@
 后端服务项目结构- 后端Golang项目结构:
   ```  项目目录
  ├── internal/   # 项目内部实现 
+ │   ├── biz   # 业务逻辑层 
+ │   │   ├── biz.go: # 依赖注入。新增一个UseCase的时候要在这里面注册
  │   ├── conf   # 配置结构体        
  │   ├── common # 存放项目中的常量定义。        
  │   ├── core   # 核心功能模块，可能包括基础设施、工具类等。        
  │   ├── data    # 数据库仓库层        
+ │   │   ├── data.go: # data 模块依赖注入。新增一个NewRepo的时候要在这里面注册
  │   ├── server     # 服务器相关功能        
+ │   │   ├── grpc.go: # grpc 服务实现
+ │   │   ├── http.go: # http 服务实现
  │   └── service    # 业务服务层        
- │   └── pkg     # 三方包       
+ │   │   ├── service.go: # service 模块依赖注入。新增一个NewService的时候要在这里面注册
+ │   └── pkg     # 存放项目中的第三方库        
  │   └── util   # 当前项目第三方库        
  ├── bin    # 编译后的可执行文件        
- │   └── pd-ask-anytime    # 启动的二进制文件        
+ │   └── ai-answer-go    # 启动的二进制文件        
  ├── script     # 定时任务        
  ├── cmd   # 应用程序的入口文件        
- │   └── pd-ask-anytime    # 具体服务的入口        
+ │   └── ai-answer-go    # 具体服务的入口        
  │       ├── main.go    # 启动文件        
  │       ├── wire.go    # 使用 Wire 进行依赖注入的配置文件        
  │       └── wire_gen.go    # Wire 生成的依赖注入代码      
- │   └── pd-ask-anytime-job    # 具体job服务的入口        
+ │   └── ai-answer-go-job    # 具体job服务的入口        
  │       ├── job.go    # 启动文件        
  │       ├── main.go    # 启动文件        
  │       ├── wire.go    # 使用 Wire 进行依赖注入的配置文件        
@@ -58,7 +64,7 @@
  ├── mock/  # Mock 相关库        
  ├── third_party/   # 第三方库        
  ├── api/     # proto文件        
- │   ├── bff/v1/   # 所有路由定义       
+ │   ├── helloworld/v1/   # 所有路由定义       
  │   │   ├── xxx_pb.go # 出入参结构体        
  │   │   ├── xxx_grpc.pb.go    # grpc路由方法代码        
  │   │   └── xxx_http.pb.go # http转grpc代码   

@@ -13,3 +13,8 @@ data:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s
     write_timeout: 0.2s
+  llm:
+    deepseek_r1:
+      api_key: "sk-1234567890"
+      base_url: "https://api.deepseek.com"
+      timeout: 60s

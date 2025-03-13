@@ -7,11 +7,11 @@
 package main
 
 import (
-	"server/internal/biz"
-	"server/internal/conf"
-	"server/internal/data"
-	"server/internal/server"
-	"server/internal/service"
+	"ai-answer-go/internal/biz"
+	"ai-answer-go/internal/conf"
+	"ai-answer-go/internal/data"
+	"ai-answer-go/internal/server"
+	"ai-answer-go/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -24,15 +24,19 @@ import (
 
 // wireApp init kratos application.
 func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
-	dataData, cleanup, err := data.NewData(confData, logger)
+	deepseekR1Client := data.NewDeepseekR1Client(confData, logger)
+	dataData, cleanup, err := data.NewData(confData, logger, deepseekR1Client)
 	if err != nil {
 		return nil, nil, err
 	}
 	greeterRepo := data.NewGreeterRepo(dataData, logger)
 	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
 	greeterService := service.NewGreeterService(greeterUsecase)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
-	httpServer := server.NewHTTPServer(confServer, greeterService, logger)
+	llmRepo := data.NewLLMRepo(dataData, logger)
+	llmUsecase := biz.NewLLMUsecase(llmRepo, logger)
+	llmService := service.NewLLMService(llmUsecase, logger)
+	grpcServer := server.NewGRPCServer(confServer, greeterService, llmService, logger)
+	httpServer := server.NewHTTPServer(confServer, greeterService, llmService, logger)
 	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {
 		cleanup()

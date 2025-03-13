@@ -1,0 +1,72 @@
+{
+  "version": "1.0",
+  "project": {
+    "name": "ai-answer-go",
+    "language": "go",
+    "rootDir": "."
+  },
+  "formatting": {
+    "go": {
+      "useGofmt": true,
+      "useGoimports": true,
+      "tabWidth": 2,
+      "insertSpaces": true,
+      "trimTrailingWhitespace": true,
+      "insertFinalNewline": true
+    }
+  },
+  "linting": {
+    "go": {
+      "enabled": true,
+      "useGolangciLint": true,
+      "golangciLintConfig": ".golangci.yml",
+      "staticcheck": true,
+      "rules": {
+        "errcheck": "error",
+        "gosimple": "error",
+        "govet": "error",
+        "ineffassign": "error",
+        "staticcheck": "error",
+        "structcheck": "error",
+        "unused": "error",
+        "varcheck": "error"
+      }
+    }
+  },
+  "testing": {
+    "go": {
+      "testCommand": "go test ./...",
+      "coverageCommand": "go test ./... -coverprofile=coverage.out",
+      "benchmarkCommand": "go test -bench=. ./..."
+    }
+  },
+  "building": {
+    "go": {
+      "buildCommand": "make build",
+      "runCommand": "./bin/ai-answer-go -conf ./configs/config.yaml"
+    }
+  },
+  "dependencies": {
+    "go": {
+      "updateCommand": "go mod tidy",
+      "vendorCommand": "go mod vendor"
+    }
+  },
+  "customCommands": {
+    "generateProto": "make api && make config",
+    "wireGen": "make generate",
+    "dockerBuild": "docker build -t ai-answer-go:latest ."
+  },
+  "filePatterns": {
+    "go": ["**/*.go"],
+    "proto": ["**/*.proto"],
+    "config": ["**/*.yaml", "**/*.yml"],
+    "docs": ["**/*.md"]
+  },
+  "ignorePatterns": [
+    "**/bin/**",
+    "**/.git/**",
+    "**/vendor/**",
+    "**/third_party/**"
+  ]
+} 
