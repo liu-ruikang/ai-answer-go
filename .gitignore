@@ -33,7 +33,7 @@ Thumbs.db
 log/*.log
 cache/*
 bin/
-configs/*
+configs/config.yaml
 /**/cache/**/*
 
 # Develop tools
