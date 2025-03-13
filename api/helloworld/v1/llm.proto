@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package api.helloworld.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "ai-answer-go/api/helloworld/v1;v1";
+
+// LLM服务定义
+service LLM {
+  // 调用Deepseek R1模型
+  rpc ChatDeepseekR1 (ChatDeepseekR1Request) returns (ChatDeepseekR1Response) {
+    option (google.api.http) = {
+      post: "/v1/llm/deepseek-r1/chat"
+      body: "*"
+    };
+  }
+  
+  // 流式调用Deepseek R1模型
+  rpc StreamChatDeepseekR1 (ChatDeepseekR1Request) returns (stream ChatDeepseekR1Response) {
+    option (google.api.http) = {
+      post: "/v1/llm/deepseek-r1/stream-chat"
+      body: "*"
+    };
+  }
+}
+
+// 消息结构定义
+message Message {
+  string role = 1;     // 角色：system, user, assistant
+  string content = 2;  // 消息内容
+}
+
+// Deepseek R1请求
+message ChatDeepseekR1Request {
+  string session_id = 1;           // 会话ID
+  repeated Message messages = 2;   // 消息历史
+  float temperature = 3;           // 温度参数
+  float top_p = 4;                 // Top-p参数
+  int32 max_tokens = 5;            // 最大生成token数
+  bool stream = 6;                 // 是否流式输出
+}
+
+// Deepseek R1响应
+message ChatDeepseekR1Response {
+  string session_id = 1;           // 会话ID
+  string content = 2;              // 生成的内容
+  TokenUsage token_usage = 3;      // Token使用情况
+  string model = 4;                // 使用的模型
+  string error_message = 5;        // 错误信息
+}
+
+// Token使用统计
+message TokenUsage {
+  int32 prompt_tokens = 1;         // 提示使用的token数
+  int32 completion_tokens = 2;     // 生成使用的token数
+  int32 total_tokens = 3;          // 总token数
+} 

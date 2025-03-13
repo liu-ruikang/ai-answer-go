@@ -36,6 +36,15 @@ message Data {
     google.protobuf.Duration read_timeout = 3;
     google.protobuf.Duration write_timeout = 4;
   }
+  message LLM {
+    message DeepseekR1 {
+      string api_key = 1;
+      string base_url = 2;
+      google.protobuf.Duration timeout = 3;
+    }
+    DeepseekR1 deepseek_r1 = 1;
+  }
   Database database = 1;
   Redis redis = 2;
+  LLM llm = 3;
 }
