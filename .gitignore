@@ -44,4 +44,4 @@ cmd/ai-answer-go/__debug_bin*
 cmd/ai-answer-go/cache/naming/
 
 # Cursor rules
-.cursorrules
+.cursor/
